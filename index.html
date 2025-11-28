@@ -1,191 +1,1289 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
+<html lang="en">
+
+<head>
+    <title>Home &mdash; </title>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Himu_Portfolio</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Extra styles for full-screen + centering -->
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        overflow: hidden;
-        background: #222;
-      }
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
 
-      #unity-container {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-      }
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
-      #unity-canvas {
-        max-width: 100%;
-        max-height: 100%;
-        outline: none;
-        display: block;
-      }
+    <link rel="stylesheet" href="css/lightgallery.min.css">
 
-      #unity-footer {
-        position: absolute;
-        bottom: 10px;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        pointer-events: none;
-      }
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
 
-      #unity-footer > * {
-        pointer-events: auto;
-      }
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
 
-      #unity-loading-bar {
-        position: absolute;
-        bottom: 60px;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-    </style>
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+    <link rel="stylesheet" href="css/swiper.css">
+    <link rel="stylesheet" href="css/Timeline.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+    <!-- 2nd part -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animate.css">
+    <link rel="stylesheet" href="css/flexslider.css">
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/style2.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:200,300,400,700" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="site-wrap">
+
+        <div class="site-mobile-menu">
+            <div class="site-mobile-menu-header">
+                <div class="site-mobile-menu-close mt-3">
+                    <span class="icon-close2 js-menu-toggle"></span>
+                </div>
+            </div>
+            <div class="site-mobile-menu-body"></div>
         </div>
-      </div>
-      <div id="unity-warning"></div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Himu_Portfolio</div>
-      </div>
-    </div>
-
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-
-      // Banner for warnings/errors
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') {
-          div.style = 'background: red; padding: 10px;';
-        } else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
-
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Webgl.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/Webgl.data.unityweb",
-        frameworkUrl: buildUrl + "/Webgl.framework.js.unityweb",
-        codeUrl: buildUrl + "/Webgl.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Himu_Portfolio",
-        productVersion: "0.1.0",
-        showBanner: unityShowBanner,
-      };
-
-      // Internal target resolution (Unity macros) - set to 1020x1080 in Player Settings
-      const TARGET_WIDTH  = 1920;
-      const TARGET_HEIGHT = 1080;
-      const TARGET_ASPECT = TARGET_WIDTH / TARGET_HEIGHT;
-
-      // Dynamic scaling while keeping aspect ratio
-      function resizeCanvas() {
-        var windowWidth = window.innerWidth;
-        var windowHeight = window.innerHeight;
-        var windowAspect = windowWidth / windowHeight;
-
-        var newWidth, newHeight;
-
-        if (windowAspect > TARGET_ASPECT) {
-          // Window is wider than game: limit by height
-          newHeight = windowHeight;
-          newWidth = newHeight * TARGET_ASPECT;
-        } else {
-          // Window is taller/narrower: limit by width
-          newWidth = windowWidth;
-          newHeight = newWidth / TARGET_ASPECT;
-        }
-
-        canvas.style.width = newWidth + "px";
-        canvas.style.height = newHeight + "px";
-      }
-
-      // Mobile vs Desktop handling
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile: fill the browser area
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-      } else {
-        // Desktop
-        container.className = "unity-desktop";
-      }
-
-      // Set logical render size for Unity
-      canvas.width = TARGET_WIDTH;
-      canvas.height = TARGET_HEIGHT;
-
-      // Initial resize + on-window resize
-      resizeCanvas();
-      window.addEventListener("resize", resizeCanvas);
 
 
-      loadingBar.style.display = "block";
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = (100 * progress) + "%";
-        }).then((unityInstance) => {
-          loadingBar.style.display = "none";
-          fullscreenButton.onclick = () => {
-            unityInstance.SetFullscreen(1);
-          };
-        }).catch((message) => {
-          alert(message);
-        });
-      };
 
-      document.body.appendChild(script);
-    </script>
-  </body>
+        <header class="site-navbar py-3" role="banner">
+
+            <div class="container-fluid">
+                <div class="row align-items-center">
+
+                    <div class="col-6 col-xl-2" data-aos="fade-down">
+                        <h1 class="mb-0">
+                            <a href="index.html" class="text-white h2 mb-0"></a>
+                        </h1>
+                    </div>
+                    <div class="col-10 col-md-8 d-none d-xl-block" data-aos="fade-down">
+                        <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
+
+                            <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
+                                <li class="active"><a href="index.html">Home</a></li>
+                                <li><a href="index.html#section-portfolio">Portfolio</a></li>
+                                <li class="has-children"><a href="single.html">Artstation</a></li>
+                                <li><a href="services.html">My Skills</a></li>
+                                <li><a href="about.html">About</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+
+
+
+
+                    <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
+                        <div class="d-none d-xl-inline-block">
+                            <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
+                                <li>
+                                    <a href="https://www.facebook.com/hassan.himzz" target="_blank" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                                </li>
+                                <li>
+                                    <a href="https://www.linkedin.com/in/md-fardoush-hassan/" target="_blank" class="pl-0 pr-3"><span class="icon-linkedin"></span></a>
+                                </li>
+                                <li>
+                                    <a href="https://www.instagram.com/?hl=en" target="_blank" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                                </li>
+                                <li>
+                                    <a href="https://www.youtube.com/channel/UCMb7AAhzo5HtcWAdxNUkHGg" target="_blank" class="pl-3 pr-3"><span class="icon-youtube-play"></span></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+
+
+
+        <div class="container-fluid" data-aos="fade" data-aos-delay="500">
+
+
+
+
+            <section class="site-hero" style="background-image: url(images/himu5.jpg);" id="section-home" data-stellar-background-ratio="0.5">
+                <div class="container">
+                    <div class="row intro-text align-items-center justify-content-center">
+                        <div class="col-md-10 text-center pt-5">
+
+                            <h1 class="site-heading site-animate">Hello, I'm <strong class="d-block">Fardoush Hassan Himu</strong></h1>
+                            <strong class="d-block text-white text-uppercase letter-spacing">and this is My Resume</strong>
+                            <br>
+                            <br>
+                            <br>
+                            <a href="https://drive.google.com/file/d/1SgI3rQFwbaFzIn92UPCMSmg9NYGq6dzt/view?usp=sharing" target="blank" class="btn btn-secondary px-4 py-2 btn-sm">Download CV</a>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </section>
+            <!-- section -->
+
+            <section id="section06" class="demo">
+                <h1></h1>
+                <a href="#section-resume">
+                    <span></span>
+                </a>
+            </section>
+            <section class="site-section " id="section-resume">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 mb-5">
+                            <div class="section-heading text-center">
+                                <!-- <h2>My <strong>Resume</strong></h2> -->
+                                <h2 class="mb-5">Experience</h2>
+                           
+                                <section id=timeline>
+                                    <div class="demo-card-wrapper">
+                                        <div class="demo-card demo-card--step1">
+                                            <div class="head">
+                                                <div class="number-box">
+                                                    <span>01</span>
+                                                </div>
+                                                <h2><span class="small">Subtitle</span> Technology</h2>
+                                            </div>
+                                            <div class="body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta reiciendis deserunt doloribus consequatur, laudantium odio dolorum laboriosam.</p>
+                                                <img src="http://placehold.it/1000x500" alt="Graphic">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="demo-card demo-card--step2">
+                                            <div class="head">
+                                                <div class="number-box">
+                                                    <span>02</span>
+                                                </div>
+                                                <h2><span class="small">Subtitle</span> Confidence</h2>
+                                            </div>
+                                            <div class="body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta reiciendis deserunt doloribus consequatur, laudantium odio dolorum laboriosam.</p>
+                                                <img src="http://placehold.it/1000x500" alt="Graphic">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="demo-card demo-card--step3">
+                                            <div class="head">
+                                                <div class="number-box">
+                                                    <span>03</span>
+                                                </div>
+                                                <h2><span class="small">Subtitle</span> Adaptation</h2>
+                                            </div>
+                                            <div class="body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta reiciendis deserunt doloribus consequatur, laudantium odio dolorum laboriosam.</p>
+                                                <img src="http://placehold.it/1000x500" alt="Graphic">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="demo-card demo-card--step4">
+                                            <div class="head">
+                                                <div class="number-box">
+                                                    <span>04</span>
+                                                </div>
+                                                <h2><span class="small">Subtitle</span> Consistency</h2>
+                                            </div>
+                                            <div class="body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta reiciendis deserunt doloribus consequatur, laudantium odio dolorum laboriosam.</p>
+                                                <img src="http://placehold.it/1000x500" alt="Graphic">
+                                            </div>
+                                        </div>
+                                
+                                        <div class="demo-card demo-card--step5">
+                                            <div class="head">
+                                                <div class="number-box">
+                                                    <span>05</span>
+                                                </div>
+                                                <h2><span class="small">Subtitle</span> Conversion</h2>
+                                            </div>
+                                            <div class="body">
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta reiciendis deserunt doloribus consequatur, laudantium odio dolorum laboriosam.</p>
+                                                <img src="http://placehold.it/1000x500" alt="Graphic">
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                </section>
+                              
+                         
+
+                            </div>
+                        </div>
+                    
+                        </div> -->
+                        <div class="col-md-5" style="color: white;">
+
+                            <div class="resume-item mb-4">
+                                <span class="date"><span class="icon-calendar"></span> July 2021 - January 2022</span>
+                                <h3>Junior Game Developer</h3>
+                                <p1 style="color: rgb(0, 174, 255);">Company: HI-Tech Bangla Bangladesh</p1>
+                                <br>
+                                <a href="https://www.htbbd.com" style="color:rgb(0, 174, 255);"target="_blank" >https://www.htbbd.com </a>
+                                <p>
+                                    Framework: Unity 3D <br> Language: C#, HLSL<br> Contributions on company:
+                                    <br> 1. Building Simulation Software for Bangladesh Army <br> 2. Problem solving  <br> 3. Making Radio Operating Systems Based on VR <br>4. Environment and animation design <br>
+                                </p>
+                                <!-- <span class="school">Github:<br>
+								https://github.com/himu82271/movieReview/tree/master/movieReview <br>
+								https://github.com/himu82271/Blog <br>
+								https://github.com/himu82271/internProject <br></span> -->
+                            </div>
+
+                            <div class="resume-item mb-4">
+                                <span class="date"><span class="icon-calendar"></span> January 2020 - April 2020</span>
+                                <h3>Software Developement Intern</h3>
+                                <p>
+                                    Company: Prochito ITS (https://its.prochito.com) <br> Framework: Laravel,Vue-JS <br> Language: PHP, Javascript, MySQL, HTML, CSS<br> Projects:
+                                    <br> # Online movie review website <br> # University Enrollment Management System <br> # MVC Based Personal Blog with CRUD <br>
+                                </p>
+                                <!-- <span class="school">Github:<br>
+								https://github.com/himu82271/movieReview/tree/master/movieReview <br>
+								https://github.com/himu82271/Blog <br>
+								https://github.com/himu82271/internProject <br></span> -->
+                            </div>
+                            &nbsp;
+
+
+
+                            <h2 class="mb-5">Extracurricular Activitiy</h2>
+
+                            <div class="resume-item mb-4">
+                                <span class="date"><span class="icon-calendar"></span> 2017-2020 </span>
+                                <h3>General Secretary at BRAC University Film Club</h3>
+                                <p>Contractual Cinematograoher of BRAC University <br>Skills: Cinematographer, Short Film Maker, VFX artist</p>
+                                <!-- <span class="school">Projects:<br>
+								https://drive.google.com/file/d/1cHHjgoGw82FrKYiRLY18l7Wcsrm<br>MFtn7/view?usp=sharing<br>
+								https://www.youtube.com/watch?v=yfERe0IIKjo<br>
+							</span> -->
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+            <section class="site-section" id="section-portfolio">
+                <div class="container">
+                    <div class="row">
+                        <div class="section-heading text-center col-md-12">
+                            <h2>Featured <strong>Portfolio</strong></h2>
+                            <h>(Click on middle to access relevant files)</h>
+                        </div>
+                    </div>
+                    <div class="filters">
+                        <ul>
+                            <li class="active" data-filter="*">All</li>
+                            <li data-filter=".Unity">Unity</li>
+                            <li data-filter=".Laravel">Laravel</li>
+                            <li data-filter=".Blender">Blender</li>
+                            <li data-filter=".Voxel">Voxel Art</li>
+
+                            <li data-filter=".Machine">Machine Learning</li>
+                            <li data-filter=".Cinematography">Cinematography</li>
+                        </ul>
+                    </div>
+
+                    <div class="filters-content">
+                        <div class="row grid">
+                            <div class="single-portfolio col-sm-4 all Laravel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/doctor.gif" alt="">
+                                    </div>
+                                    <a href="https://github.com/himu82271/CloudAid" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.gif" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Doctor Appointment System</h4>
+                                    <div class="cat">Laravel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Laravel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/movie.gif" alt="">
+                                    </div>
+                                    <a href="https://github.com/himu82271/movie" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.gif" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Online Movie Review Website</h4>
+                                    <div class="cat">Laravel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Laravel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/university.gif" alt="">
+                                    </div>
+                                    <a href="https://github.com/himu82271/UniversityManagement" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.gif" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>University Enrollment Management System
+                                        <h4>
+                                            <div class="cat">Laravel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Laravel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/blog.gif" alt="">
+                                    </div>
+                                    <a href="https://github.com/himu82271/Blog" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.gif" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Personal Blog Website with CRUD
+                                        <h4>
+                                            <div class="cat">Laravel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Blender">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/seashack.png" alt="">
+                                    </div>
+                                    <a href="https://skfb.ly/6TWR9" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Low Poly Sea Shack</h4>
+                                    <div class="cat">Blender</div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Blender">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/island.png" alt="">
+                                    </div>
+                                    <a href="https://skfb.ly/6V9DC" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Floating Island</h4>
+                                    <div class="cat">Blender</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Blender">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/well.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/K1fbK" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Low Poly Well</h4>
+                                    <div class="cat">Blender</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Blender">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/Donkey Kong.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/K1fbK" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Donkey Kong Game Scene</h4>
+                                    <div class="cat">Blender</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/desert.png" alt="">
+                                    </div>
+                                    <a href="https://sketchfab.com/3d-models/himu-2b1be7702d6e4260a5e4c28a126d5a14" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Desert Ruins</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/sokh 20.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/Xkag7" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Sokher Tong</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/hammer.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/Xkag7" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Pixelated Hammer</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/robo.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/FX8ux" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>robo Minion</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/JG3oZ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Among Us</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/factory (2).png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/45Zx6" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Old Factory</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/boss.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Mob Boss</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/butterfly.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Butterfly</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/centerpiede.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>centerpiede</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/cobra.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>cobra</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/egret.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>egret</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/mantis.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>mantis</h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among us/crewmate.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Crew Mate (Among Us) </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among us/ELECTRICAL.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Electrical (Among Us) </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among us/kill.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Kill (Among Us) </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among us/sad.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> Who Who?? (Among Us) </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/among us/impostor.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> Impostor (Among Us) </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/pirate.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> pirate </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="my voxels/crock.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> crock </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/Bugs/3.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> Bugs </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Voxel">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/Bugs/4.png" alt="">
+                                    </div>
+                                    <a href="https://p3d.in/uW5jQ" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="p-inner">
+                                    <h4> Bugs </h4>
+                                    <div class="cat">Voxel</div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/2taka.gif" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/drive/folders/1NfpQXkpW5O0RhCKfdYXjMk_7EJbTXBas?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>AR Model Viewer</h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/vuforia.jpg" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/drive/folders/1U-eZXP2AvM4ZNGp_I6DQ7PZbPndS1vir?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>AR Video Player</h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/whosthatpokemon.gif" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/file/d/1DBVACjvu0JjeQKWj_qhUgGXHude5v3ui/view?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Whos That Pokemon!</h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/cube.PNG" alt="">
+                                    </div>
+                                    <a href=# class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Obsticle Avoid </h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/archer.gif" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/drive/folders/1aP5345-Cx2B0GvM7Mmi_S3gFkradJEf9?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Archer(Ongoing Developement) </h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Unity">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/adventure.PNG" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/drive/folders/1jYovhDubJDcD9krhhhhVn_TbBpCUTGyu?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Knight Adventure(Ongoing Developement) </h4>
+                                    <div class="cat">Unity</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Machine">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/nodemcu.gif" alt="">
+                                    </div>
+                                    <a href="https://www.youtube.com/watch?v=1cu0DjbwVsM" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Health Risk Prediction Device With NodeMCU</h4>
+                                    <div class="cat">Machine Learning</div>
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="single-portfolio col-sm-4 all Machine">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/health.gif" alt="">
+                                    </div>
+                                    <a href="http://health-risk-predictor.herokuapp.com/" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Health Risk Prediction Using Ai and Machine Learning</h4>
+                                    <div class="cat">Machine Learning</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Machine">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/carparking.gif" alt="">
+                                    </div>
+                                    <a href="https://drive.google.com/file/d/1w_RhG-IFld-8pzX60MsTkpHzfZcjIXrz/view?usp=sharing" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Car Parking Helper With Arduino</h4>
+                                    <div class="cat">Machine Learning</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/shikarokti.jpg" alt="">
+                                    </div>
+                                    <a href="https://www.youtube.com/watch?v=uWhODeMtSZs" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Shikarokti</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/thesisstatement.PNG" alt="">
+                                    </div>
+                                    <a href="https://www.youtube.com/watch?v=5RUtNxVrluA" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Thesis Statement</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/roadtoindependence.PNG" alt="">
+                                    </div>
+                                    <a href="https://www.facebook.com/22505712881/videos/273594326914689" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Road to Independence</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/antibully.PNG" alt="">
+                                    </div>
+                                    <a href="https://www.facebook.com/22505712881/videos/10155413051197882" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Anti-Bullying</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/boshonto.PNG" alt="">
+                                    </div>
+                                    <a href="https://www.facebook.com/22505712881/videos/1784147688357931" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Boshonto Uthshob</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+
+                            <div class="single-portfolio col-sm-4 all Cinematography">
+                                <div class="relative">
+                                    <div class="thumb">
+                                        <div class="overlay overlay-bg"></div>
+                                        <img class="image img-fluid" src="images/clubfair.PNG" alt="">
+                                    </div>
+                                    <a href="https://www.facebook.com/22505712881/videos/10155466719427882" target="blank" class="img-pop-up">
+                                        <div class="middle">
+                                            <div class="text align-self-center d-flex"><img src="images/preview.png" alt=""></div>
+                                        </div>
+                                    </a>
+
+                                </div>
+                                <div class="p-inner">
+                                    <h4>Club Fair Intro</h4>
+                                    <div class="cat">Cinematography</div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+        </div>
+
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="js/jquery-migrate-3.0.1.min.js"></script>
+        <script src="js/jquery-ui.js"></script>
+        <script src="js/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/owl.carousel.min.js"></script>
+        <script src="js/jquery.stellar.min.js"></script>
+        <script src="js/jquery.countdown.min.js"></script>
+        <script src="js/jquery.magnific-popup.min.js"></script>
+        <script src="js/bootstrap-datepicker.min.js"></script>
+        <script src="js/swiper.min.js"></script>
+        <script src="js/aos.js"></script>
+
+        <script src="js/picturefill.min.js"></script>
+        <script src="js/lightgallery-all.min.js"></script>
+        <script src="js/jquery.mousewheel.min.js"></script>
+
+        <script src="js/main.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#lightgallery').lightGallery();
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+        <script src="js/vendor/jquery.min.js"></script>
+        <script src="js/vendor/jquery-migrate-3.0.1.min.js"></script>
+        <script src="js/vendor/popper.min.js"></script>
+        <script src="js/vendor/bootstrap.min.js"></script>
+
+        <script src="js/vendor/jquery.easing.1.3.js"></script>
+
+        <script src="js/vendor/jquery.stellar.min.js"></script>
+        <script src="js/vendor/jquery.waypoints.min.js"></script>
+
+        <script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
+        <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+        <script src="js/custom.js"></script>
+
+</body>
+
 </html>
