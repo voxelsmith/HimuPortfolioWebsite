@@ -34,6 +34,56 @@
     <link rel="stylesheet" href="fonts/icomoon/style.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/style2.css">
+
+    <!-- Small tweak to make project links look like clear buttons -->
+    <style>
+        .project-links {
+            margin-top: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .project-links .btn-project {
+            font-size: 0.85rem;
+            padding: 0.4rem 1rem;
+            border-radius: 999px;
+            /* pill shape */
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.04);
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .project-links .btn-project:hover {
+            background: #ffffff;
+            color: #111111;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transform: translateY(-1px);
+        }
+
+        /* Optional: make buttons stack on very small screens */
+        @media (max-width: 480px) {
+            .project-links {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .project-links .btn-project {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -130,29 +180,25 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Rust Rampage thumbnail -->
                                     <img class="image img-fluid" src="images/RR.png" alt="Rust Rampage thumbnail">
                                 </div>
-                                <!-- Main click opens Play Store -->
-                                <a href="https://play.google.com/store/apps/details?id=com.GameBanai.RustRampage"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>Rust Rampage (Beta)</h4>
                                 <div class="cat">Personal · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.GameBanai.RustRampage"
-                                        target="_blank">Play Store</a>
-                                    <span> · </span>
-                                    <a href="https://testflight.apple.com/join/JTwbRMvD" target="_blank">TestFlight
-                                        (iOS)</a>
+                                        target="_blank" class="btn-project">Play Store</a>
+                                    <a href="https://testflight.apple.com/join/JTwbRMvD" target="_blank"
+                                        class="btn-project">TestFlight (iOS)</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -161,26 +207,24 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Combat Rover thumbnail -->
                                     <img class="image img-fluid" src="images/COmbatRover.jpg"
                                         alt="Combat Rover thumbnail">
                                 </div>
-                                <a href="https://store.steampowered.com/app/3153200/Combat_Rover_Operation_Storm/"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>Combat Rover: Operation Storm (Beta)</h4>
                                 <div class="cat">Office · PC / Steam</div>
                                 <div class="project-links">
                                     <a href="https://store.steampowered.com/app/3153200/Combat_Rover_Operation_Storm/"
-                                        target="_blank">Steam Store</a>
+                                        target="_blank" class="btn-project">Steam Store</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -189,28 +233,26 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Holobike thumbnail -->
                                     <img class="image img-fluid" src="images/Holobike.jpg" alt="Holobike 3D thumbnail">
                                 </div>
-                                <a href="https://play.google.com/store/apps/details?id=com.ArcSys.Holobike&hl=en"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>Holobike 3D</h4>
                                 <div class="cat">Office · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.ArcSys.Holobike&hl=en"
-                                        target="_blank">Play Store</a>
-                                    <span> · </span>
-                                    <a href="https://apps.apple.com/us/app/holobike-3d/id6477530630" target="_blank">App
-                                        Store</a>
+                                        target="_blank" class="btn-project">Play Store</a>
+
+                                    <a href="https://apps.apple.com/us/app/holobike-3d/id6477530630" target="_blank"
+                                        class="btn-project">App Store</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -219,29 +261,27 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Air Hockey Glow thumbnail -->
                                     <img class="image img-fluid" src="images/airHckey.jpg"
                                         alt="Air Hockey Glow thumbnail">
                                 </div>
-                                <a href="https://play.google.com/store/apps/details?id=com.air.hockey.glow.hd&pcampaignid=web_share"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>Air Hockey Glow</h4>
                                 <div class="cat">Office · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.air.hockey.glow.hd&pcampaignid=web_share"
-                                        target="_blank">Play Store</a>
-                                    <span> · </span>
+                                        target="_blank" class="btn-project">Play Store</a>
+
                                     <a href="https://apps.apple.com/us/app/air-hockey-glow-hd-arcade-2d/id1549140064"
-                                        target="_blank">App Store</a>
+                                        target="_blank" class="btn-project">App Store</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -250,28 +290,26 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Wynn Slots thumbnail -->
                                     <img class="image img-fluid" src="images/wynnSlots.png" alt="Wynn Slots thumbnail">
                                 </div>
-                                <a href="https://play.google.com/store/apps/details?id=com.torpedolabs.wynn.slots&hl=en"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>Wynn Slots</h4>
                                 <div class="cat">Office · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.torpedolabs.wynn.slots&hl=en"
-                                        target="_blank">Play Store</a>
-                                    <span> · </span>
+                                        target="_blank" class="btn-project">Play Store</a>
+
                                     <a href="https://apps.apple.com/us/app/wynn-slots-las-vegas-casino/id1323336775"
-                                        target="_blank">App Store</a>
+                                        target="_blank" class="btn-project">App Store</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -280,29 +318,27 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual 2 Pics 1 Word thumbnail -->
                                     <img class="image img-fluid" src="images/2Pics1Word.jpg"
                                         alt="2 Pics 1 Word thumbnail">
                                 </div>
-                                <a href="https://play.google.com/store/apps/details?id=com.arcsys.two.pic.one.word&pcampaignid=web_share"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>2 Pics 1 Word</h4>
                                 <div class="cat">Solo Office · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.arcsys.two.pic.one.word&pcampaignid=web_share"
-                                        target="_blank">Play Store</a>
-                                    <span> · </span>
+                                        target="_blank" class="btn-project">Play Store</a>
+
                                     <a href="https://apps.apple.com/us/app/4-pics-1-word-fun-quiz-games/id6444666987"
-                                        target="_blank">App Store</a>
+                                        target="_blank" class="btn-project">App Store</a>
                                 </div>
+
                             </div>
                         </div>
 
@@ -311,25 +347,23 @@
                             <div class="relative">
                                 <div class="thumb">
                                     <div class="overlay overlay-bg"></div>
-                                    <!-- TODO: replace with actual Aerthlings thumbnail -->
                                     <img class="image img-fluid" src="images/aerthlings.png" alt="Aerthlings thumbnail">
                                 </div>
-                                <a href="https://play.google.com/store/apps/details?id=com.moderngames.aerthlings&hl=en"
-                                    target="_blank" class="img-pop-up">
-                                    <div class="middle">
-                                        <div class="text align-self-center d-flex">
-                                            <img src="images/preview.png" alt="">
-                                        </div>
+                                <!-- Removed clickable link around image -->
+                                <div class="middle">
+                                    <div class="text align-self-center d-flex">
+                                        <img src="images/preview.png" alt="">
                                     </div>
-                                </a>
+                                </div>
                             </div>
                             <div class="p-inner">
                                 <h4>AERTHLINGS</h4>
                                 <div class="cat">Office · Mobile</div>
                                 <div class="project-links">
                                     <a href="https://play.google.com/store/apps/details?id=com.moderngames.aerthlings&hl=en"
-                                        target="_blank">Play Store</a>
+                                        target="_blank" class="btn-project">Play Store</a>
                                 </div>
+
                             </div>
                         </div>
 
