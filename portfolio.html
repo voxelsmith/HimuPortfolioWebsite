@@ -82,8 +82,33 @@
                 justify-content: center;
             }
         }
-    </style>
-    <style>
+
+        .nav-email-text {
+            text-align: right;
+            margin-bottom: 4px;
+        }
+
+        .nav-email-text a {
+            color: #ffffff;
+            font-size: 0.8rem;
+            text-decoration: none;
+            white-space: normal;
+            /* allow wrapping if needed */
+        }
+
+        .nav-email-text a:hover {
+            text-decoration: underline;
+        }
+
+        .nav-email-text .icon-envelope {
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .nav-email-text .email-full {
+            vertical-align: middle;
+        }
+
         /* Keep navbar black even after scroll */
         .site-navbar.scrolled {
             background-color: #000000 !important;
@@ -143,28 +168,44 @@
                     </div>
 
                     <div class="col-6 col-xl-2 text-right" data-aos="fade-down">
+
+                        <!-- Desktop: email on its own line, full text -->
                         <div class="d-none d-xl-inline-block">
+                            <div class="nav-email-text">
+                                <a href="mailto:fardoush.hassan82271@gmail.com" id="nav-email-link">
+                                    <span class="icon-envelope"></span>
+                                    <span class="email-full"> fardoush.hassan82271@gmail.com</span>
+                                </a>
+                            </div>
+
                             <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0"
                                 data-class="social">
                                 <li>
-                                    <a href="https://www.facebook.com/hassan.himzz" target="_blank"
-                                        class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                                    <a href="https://www.facebook.com/hassan.himzz" target="_blank" class="pl-0 pr-3">
+                                        <span class="icon-facebook"></span>
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="https://www.linkedin.com/in/md-fardoush-hassan/" target="_blank"
-                                        class="pl-0 pr-3"><span class="icon-linkedin"></span></a>
+                                        class="pl-0 pr-3">
+                                        <span class="icon-linkedin"></span>
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.instagram.com/?hl=en" target="_blank" class="pl-3 pr-3"><span
-                                            class="icon-instagram"></span></a>
+                                    <a href="https://www.instagram.com/?hl=en" target="_blank" class="pl-3 pr-3">
+                                        <span class="icon-instagram"></span>
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="https://www.youtube.com/channel/UCMb7AAhzo5HtcWAdxNUkHGg" target="_blank"
-                                        class="pl-3 pr-3"><span class="icon-youtube-play"></span></a>
+                                        class="pl-3 pr-3">
+                                        <span class="icon-youtube-play"></span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
 
+                        <!-- Mobile: keep just an icon or short text inside menu toggle area if you want later -->
                         <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3"
                             style="position: relative; top: 3px;">
                             <a href="#" class="site-menu-toggle js-menu-toggle text-black">
@@ -172,6 +213,7 @@
                             </a>
                         </div>
                     </div>
+
 
                 </div>
             </div>
