@@ -82,6 +82,8 @@ a:active {
   /* background: #fff;  */
 }
 
+
+
 .site-navbar .navbar-brand {
   display: inline-block;
   border: 2px solid #fff;
@@ -919,4 +921,17 @@ a:active {
 .experience-card__line {
   background: #bac964;
   /* matches your accent color */
+}
+
+html {
+  scroll-padding-top: 0px;
+}
+
+/* Mobile only: add offset for the fixed navbar */
+@media (max-width: 991.98px) {
+  html {
+    scroll-padding-top: 90px;
+  }
+
+  /* adjust to your mobile navbar height */
 }

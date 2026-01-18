@@ -1767,3 +1767,13 @@ img:hover {
   /* -webkit-filter: grayscale(0); */
   -webkit-transform: scale(1.01);
 }
+
+@media (max-width: 991.98px) {
+  header.site-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 3000;
+  }
+}
